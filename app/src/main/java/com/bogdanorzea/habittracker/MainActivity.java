@@ -85,21 +85,8 @@ public class MainActivity extends AppCompatActivity {
         TextView displayView = (TextView) findViewById(R.id.text);
         displayView.setText("The habits table contains:\n\n");
 
-        // Create and/or open a database to read from it
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
-        String[] projection = {
-                HabitContract.HabitEntry._ID,
-                HabitContract.HabitEntry.COLUMN_HABIT_NAME,
-                HabitContract.HabitEntry.COLUMN_HABIT_DATE,
-                HabitContract.HabitEntry.COLUMN_HABIT_DURATION_MIN,
-                HabitContract.HabitEntry.COLUMN_HABIT_LOCATION
-        };
-
-        // Performs "SELECT * FROM habits"
-        // to get a Cursor that contains all rows from the habits table.
-        Cursor cursor = db.query(HabitContract.HabitEntry.TABLE_NAME,
-                projection, null, null, null, null, null);
+        // Get cursor with all data
+        Cursor cursor  = readAllData();
 
         try {
             // Get the column index
@@ -125,5 +112,25 @@ public class MainActivity extends AppCompatActivity {
             cursor.close();
         }
 
+    }
+
+    private Cursor readAllData() {
+        // Create and/or open a database to read from it
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        String[] projection = {
+                HabitContract.HabitEntry._ID,
+                HabitContract.HabitEntry.COLUMN_HABIT_NAME,
+                HabitContract.HabitEntry.COLUMN_HABIT_DATE,
+                HabitContract.HabitEntry.COLUMN_HABIT_DURATION_MIN,
+                HabitContract.HabitEntry.COLUMN_HABIT_LOCATION
+        };
+
+        // Performs "SELECT * FROM habits"
+        // to get a Cursor that contains all rows from the habits table.
+        Cursor cursor = db.query(HabitContract.HabitEntry.TABLE_NAME,
+                projection, null, null, null, null, null);
+
+        return cursor;
     }
 }
